@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Slideshow</title>
+    <style>
+     body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    margin: 0;
+    background-color: #f4f4f4;
+    /* border: 9px solid black; */
+}
+
+.slideshow-container {
+    width: 80%;
+    max-width: 300px;
+    overflow: hidden;
+    border: 2px solid #333;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    height: 400px;
+}
+
+img {
+    width: 100%;
+    height: 400px;
+    border-radius: 10px;
+}   
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <img id="slideshow" src="" alt="Slideshow Image">
+    </div>
+</body>
+</html>
+<script>
+ const images = [
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRW76Uoole_PZ9xzWCzmKYnTa_YUyJTGOmHg&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPTbMPs5wtEdkX6gYsVE0NQ1W1qp1XoBmxR1Dt880PBK3GMc7ai8cALutw6PT7LihNoiM&usqp=CAU",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgJ__8xKEq-aHjYNS6hlUCjJBqy6oK4BZFIOkCTGWS8DY5lZXCyu6NWPuxGqv-Vjlvz1c&usqp=CAU",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBEq3_R6bci9V-jCnAGkOwrgFGM_BvzY_fX0EJhW57FKDX4zB__5H0EpODzdjeue73UB4&usqp=CAU",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ4tzncrxhibiEr_qhgFUM2qsHUMOSN-7vgV2BO__k-0G_F_PnsYnER8BZMtp7w7AW1PI&usqp=CAU",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL4aBPLScJ9K5svPurlJvbXzKZBe8OBNPvtjHFD58sdQDSRN-k8Wavs9nSt85Tj4RElpA&usqp=CAU"
+    
+];
+
+let currentIndex = 0;
+const slideshow = document.getElementById('slideshow');
+slideshow.src = images[currentIndex];
+function changeImage() {
+    currentIndex = (currentIndex + 1) % images.length; 
+    slideshow.src = images[currentIndex];
+}
+setInterval(changeImage, 2000);   
+</script>
