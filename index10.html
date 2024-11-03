@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Analyzer Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+        }
+        p {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Text Analyzer Tool</h1>
+    <textarea id="textInput" rows="5" cols="40" placeholder="Enter your text here"></textarea><br>
+    
+    <button onclick="analyzeText('countWords')">Count Words</button>
+    <button onclick="analyzeText('toUpperCase')">To Upper Case</button>
+    <button onclick="analyzeText('toLowerCase')">To Lower Case</button</button>
+    <button onclick="analyzeText('checkSubstring')">Check Substring</button><br>
+
+    <input type="text" id="substringInput" placeholder="Enter substring to check" style="display:none;">
+    
+    <p id="result"></p>
+
+    <script>
+        function analyzeText(action) {
+            const text = document.getElementById('textInput').value;
+            const resultElement = document.getElementById('result');
+            const substringInput = document.getElementById('substringInput');
+
+            switch (action) {
+                case 'countWords':
+                    const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+                    resultElement.textContent = wordCount;
+                    substringInput.style.display = 'none';
+                    break;
+
+                case 'toUpperCase':
+                    resultElement.textContent =  text.toUpperCase();
+                    substringInput.style.display = 'none';
+                    break;
+
+                case 'toLowerCase':
+                    resultElement.textContent = text.toLowerCase()};
+                    substringInput.style.display = 'none';
+                    
+                    substringInput.style.display = 'inline';
+                    substringInput.focus();
+                    substringInput.onblur = function() {
+                        const substring = substringInput.value;
+                        const containsSubstring = text.includes(substring);
+                        resultElement.textContent = containsSubstring 
+                            ? substring: "substring";
+                     substring: "substring";                   
+                    
+                    }
+                
+            }
+        
+    </script>
+
+</body>
+</html>
