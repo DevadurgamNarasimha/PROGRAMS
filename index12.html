@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Data Visualization</title>
+    <style>
+     body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    border: 2px solid black;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input {
+    width: calc(33.3% - 10px);
+    padding: 10px;
+    margin: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 15px;
+    margin-top: 10px;
+}
+
+.bar-graph {
+    display: flex;
+    align-items: flex-end;
+    height: 200px;
+    margin-top: 10px;
+}
+
+.bar {
+    width: 50px;
+    margin: 0 5px;
+    background-color: #4CAF50;
+    text-align: center;
+    color: white;
+}   
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Product Input</h2>
+        <form id="productForm">
+            <input type="text" id="productName" placeholder="Product Name" required>
+            <input type="number" id="productPrice" placeholder="Price" required>
+            <input type="number" id="productRating" placeholder="Rating" min="1" max="5" required>
+            <button type="submit">Add Product</button>
+        </form>
+
+        <div>
+            <h3>Price Bar Graph</h3>
+            <button id="sortPrice">Sort by Price</button>
+            <div id="priceGraph" class="bar-graph"></div>
+        </div>
+
+        <div>
+            <h3>Rating Bar Graph</h3>
+            <button id="sortRating">Sort by Rating</button>
+            <div id="ratingGraph" class="bar-graph"></div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+  const productForm = document.getElementById('productForm');
+const priceGraph = document.getElementById('priceGraph');
+const ratingGraph = document.getElementById('ratingGraph');
+const sortPriceButton = document.getElementById('sortPrice');
+const sortRatingButton = document.getElementById('sortRating');
+
+let products = [];
+
+productForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const name = document.getElementById('productName').value;
+    const price = parseFloat(document.getElementById('productPrice').value);
+    const rating = parseFloat(document.getElementById('productRating').value);
+    
+    products.push({ name, price, rating });
+    updateGraphs();
+    productForm.reset();
+});
+
+function updateGraphs() {
+    priceGraph.innerHTML = '';
+    ratingGraph.innerHTML = '';
+    products.forEach(product => {
+        const priceBar = document.createElement('div');
+        priceBar.classList.add('bar');
+        priceBar.style.height = product.price * 10; 
+        priceBar.innerText = product.price;
+        priceGraph.appendChild(priceBar);
+
+        const ratingBar = document.createElement('div');
+        ratingBar.classList.add('bar');
+        ratingBar.style.height = product.rating * 40; 
+        ratingBar.innerText = product.rating;
+        ratingGraph.appendChild(ratingBar);
+    });
+}
+
+sortPriceButton.addEventListener('click', function() {
+    products.sort((a, b) => a.price - b.price);
+    updateGraphs();
+});
+
+sortRatingButton.addEventListener('click', function() {
+    products.sort((a, b) => a.rating - b.rating);
+    updateGraphs();
+});  
+</script>

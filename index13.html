@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management App</title>
+    <style>
+      body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    border: 2px solid black;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 15px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.task-item {
+    padding: 10px;
+    margin: 5px 0;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-item.completed {
+    background: #d4edda;
+    text-decoration: line-through;
+}  
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Task Management Application</h2>
+        <form id="taskForm">
+            <input type="text" id="taskTitle" placeholder="Task Title" required>
+            <textarea id="taskDescription" placeholder="Task Description" required></textarea>
+            <select id="taskStatus">
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+            </select>
+            <button type="submit">Add Task</button>
+        </form>
+
+        <div>
+            <h3>Tasks</h3>
+            <select id="filterStatus">
+                <option value="All">All</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+            </select>
+            <ul id="taskList"></ul>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    const taskForm = document.getElementById('taskForm');
+const taskList = document.getElementById('taskList');
+const filterStatus = document.getElementById('filterStatus');
+
+let tasks = [];
+taskForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const title = document.getElementById('taskTitle').value;
+    const description = document.getElementById('taskDescription').value;
+    const status = document.getElementById('taskStatus').value;
+
+    const task = { title, description, status, id: Date.now() };
+    tasks.push(task);
+    updateTaskList();
+    taskForm.reset();
+});
+
+function updateTaskList() {
+    taskList.innerHTML = '';
+    const filteredTasks = filterStatus.value === 'All' ? tasks : tasks.filter(task => task.status === filterStatus.value);
+    
+    filteredTasks.forEach(task => {
+        const taskItem = document.createElement('li');
+        taskItem.className =task.status === 'Completed' ? 'completed' : '';
+        taskItem.innerHTML = `
+            <div>
+                <strong>${task.title}</strong>
+                <p>${task.description}</p>
+                <small>Status: ${task.status}</small>
+            </div>
+            <div>
+                <button onclick="editTask(${task.id})">Edit</button>
+                <button onclick="deleteTask(${task.id})">Delete</button>
+                <button onclick="toggleComplete(${task.id})">${task.status === 'Completed' ? 'Undo' : 'Complete'}</button>
+            </div>
+        `;
+        taskList.appendChild(taskItem);
+    });
+}
+function deleteTask(taskId) {
+    tasks = tasks.filter(task => task.id !== taskId);
+    updateTaskList();
+}
+function editTask(taskId) {
+    const task = tasks.find(task => task.id === taskId);
+    if (task) {
+        document.getElementById('taskTitle').value = task.title;
+        document.getElementById('taskDescription').value = task.description;
+        document.getElementById('taskStatus').value = task.status;
+
+        deleteTask(taskId);
+    }
+}
+function toggleComplete(taskId) {
+    const task = tasks.find(task => task.id === taskId);
+    if (task) {
+        task.status = task.status === 'Completed' ? 'Pending' : 'Completed';
+        updateTaskList();
+    }
+}filterStatus.addEventListener('change', updateTaskList);
+</script>
